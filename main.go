@@ -44,7 +44,7 @@ func handleEvent(ie slackevents.EventsAPIInnerEvent) {
 	case *slackevents.MessageEvent:
 		words := messageWords(ev)
 		if roll() || ev.ChannelType == "im" || hasAChickenWord(words) {
-			_ = api.AddReaction("chicken", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
+			_  =  api.AddReaction("chicken", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
 	case *slackevents.AppMentionEvent:
 		_ = api.AddReaction("chicken", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))

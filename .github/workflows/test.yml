@@ -40,5 +40,5 @@ jobs:
 
     - name: go fmt
       run: |
-        go fmt
+        test -z $(gofmt -l .)
 
