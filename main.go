@@ -7,11 +7,10 @@ import (
 	"github.com/nlopes/slack/slackevents"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 )
-
-const JAMIE = "UAVNNBMK2"
 
 var api = slack.New(os.Getenv("SLACK_TOKEN"))
 
@@ -39,11 +38,15 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		innerEvent := event.InnerEvent
 		switch ev := innerEvent.Data.(type) {
 		case *slackevents.MessageEvent:
-			if ev.User == JAMIE || ev.ChannelType == "im" {
+			if roll() || ev.ChannelType == "im" {
 				_ = api.AddReaction("chicken", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 			}
 		case *slackevents.AppMentionEvent:
 			_ = api.AddReaction("chicken", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
 	}
+}
+
+func roll() bool {
+	return rand.Intn(20) < 1
 }
