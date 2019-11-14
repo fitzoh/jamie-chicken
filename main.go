@@ -25,6 +25,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	if e != nil {
 		fmt.Println("error: ", e)
 	}
+	//initial slack endpoint verification, only happens on install
 	if event.Type == slackevents.URLVerification {
 		var r *slackevents.ChallengeResponse
 		err := json.Unmarshal(bytes, &r)
@@ -34,6 +35,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text")
 		w.Write([]byte(r.Challenge))
 	}
+	//there's actually a message to handle
 	if event.Type == slackevents.CallbackEvent {
 		innerEvent := event.InnerEvent
 		switch ev := innerEvent.Data.(type) {
