@@ -27,3 +27,14 @@ func Test_hasAChickenWord(t *testing.T) {
 		t.Errorf("chicken is a chicken")
 	}
 }
+
+func Test_hasAGrittyWord(t *testing.T) {
+
+	if hasAGrittyWord(strset.New("moist")) {
+		t.Errorf("moist is not gritty")
+	}
+
+	if !hasAGrittyWord(strset.New("grit")) {
+		t.Errorf("grit is gritty")
+	}
+}
