@@ -19,10 +19,6 @@ var api = slack.New(os.Getenv("SLACK_TOKEN"))
 
 var chickenWords = strset.New("chicken", "chickens", "hen", "hens", "rooster", "roosters", "egg", "eggs", "bawk")
 
-//Jamie Dicken  1 day ago
-//Oh yes, every time someone says sucks, awful, dumb, or fun, that will be me
-var grittyWords = strset.New("grit", "sucks", "awful", "dumb", "fun")
-
 func main() {
 	http.HandleFunc("/", Handler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -50,8 +46,8 @@ func handleEvent(ie slackevents.EventsAPIInnerEvent) {
 		if roll() || ev.ChannelType == "im" || hasAChickenWord(words) {
 			_ = api.AddReaction("chicken", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
-		if hasAGrittyWord(words) {
-			_ = api.AddReaction("grit", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
+		if IsGritty(strings.ToLower(ev.Text)) {
+			_ = api.AddReaction("party-grit", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
 		if words.Has("connect") {
 			_ = api.AddReaction("dumpsterfire", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
@@ -82,10 +78,6 @@ func messageWords(m *slackevents.MessageEvent) *strset.Set {
 
 func hasAChickenWord(w *strset.Set) bool {
 	return !strset.Intersection(chickenWords, w).IsEmpty()
-}
-
-func hasAGrittyWord(w *strset.Set) bool {
-	return !strset.Intersection(grittyWords, w).IsEmpty()
 }
 
 func roll() bool {
