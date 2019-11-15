@@ -52,7 +52,7 @@ func handleEvent(ie slackevents.EventsAPIInnerEvent) {
 			_ = api.AddReaction("party-grit", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
 		if meetRavesGoal(ev) {
-			_ = api.AddReaction("middle_finger", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
+			_ = api.AddReaction("raves-goal", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
 		if words.Has("connect") {
 			_ = api.AddReaction("dumpsterfire", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
