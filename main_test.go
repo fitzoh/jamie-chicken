@@ -27,4 +27,3 @@ func Test_hasAChickenWord(t *testing.T) {
 		t.Errorf("chicken is a chicken")
 	}
 }
-
