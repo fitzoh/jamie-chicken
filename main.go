@@ -52,6 +52,9 @@ func handleEvent(ie slackevents.EventsAPIInnerEvent) {
 		if words.Has("connect") {
 			_ = api.AddReaction("dumpsterfire", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
+		if words.HasAny("mil", "mother", "blue", "eyes", "punnett") {
+			_ = api.AddReaction("blue-eyes", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
+		}
 	case *slackevents.AppMentionEvent:
 		_ = api.AddReaction("chicken", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 	}
