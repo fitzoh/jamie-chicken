@@ -17,6 +17,8 @@ import (
 
 var api = slack.New(os.Getenv("SLACK_TOKEN"))
 
+const ravesUserId = "U5Y1XU9UL"
+
 var chickenWords = strset.New("chicken", "chickens", "hen", "hens", "rooster", "roosters", "egg", "eggs", "bawk")
 
 func main() {
@@ -49,6 +51,9 @@ func handleEvent(ie slackevents.EventsAPIInnerEvent) {
 		if IsGritty(strings.ToLower(ev.Text)) {
 			_ = api.AddReaction("party-grit", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
+		if meetRavesGoal(ev) {
+			_ = api.AddReaction("raves-goal", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
+		}
 		if words.Has("connect") {
 			_ = api.AddReaction("dumpsterfire", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
@@ -78,6 +83,14 @@ func messageWords(m *slackevents.MessageEvent) *strset.Set {
 
 func hasAChickenWord(w *strset.Set) bool {
 	return !strset.Intersection(chickenWords, w).IsEmpty()
+}
+
+func meetRavesGoal(m *slackevents.MessageEvent) bool {
+	return m.User == ravesUserId && probablyNotGonnaHappenButMaybeCrazyJamieWillDoIt()
+}
+
+func probablyNotGonnaHappenButMaybeCrazyJamieWillDoIt() bool {
+	return rand.Intn(100) < 1
 }
 
 func roll() bool {
