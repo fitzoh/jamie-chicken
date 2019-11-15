@@ -43,3 +43,11 @@ func TestSucksDumbStupidIsGritty(t *testing.T) {
 		t.Errorf("expected gritty sentiment")
 	}
 }
+
+func TestThereIsNoWayMoistIsGritty(t *testing.T) {
+	message := "moist. moist. moist. moist."
+
+	if IsGritty(message) {
+		t.Errorf("wtf, moist is definitely not gritty")
+	}
+}
