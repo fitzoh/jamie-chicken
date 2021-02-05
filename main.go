@@ -3,9 +3,6 @@ package jamie_chicken
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nlopes/slack"
-	"github.com/nlopes/slack/slackevents"
-	"github.com/scylladb/go-set/strset"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -13,6 +10,10 @@ import (
 	"os"
 	"strings"
 	"unicode"
+
+	"github.com/nlopes/slack"
+	"github.com/nlopes/slack/slackevents"
+	"github.com/scylladb/go-set/strset"
 )
 
 var api = slack.New(os.Getenv("SLACK_TOKEN"))
@@ -48,7 +49,8 @@ func handleEvent(ie slackevents.EventsAPIInnerEvent) {
 		if roll() || ev.ChannelType == "im" || hasAChickenWord(words) {
 			_ = api.AddReaction("chicken", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
-		if IsGritty(strings.ToLower(ev.Text)) {
+		c := NewSentimClient()
+		if c.IsGritty(strings.ToLower(ev.Text)) {
 			_ = api.AddReaction("party-grit", slack.NewRefToMessage(ev.Channel, ev.TimeStamp))
 		}
 		if meetRavesGoal(ev) {
