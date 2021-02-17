@@ -3,9 +3,6 @@ package jamie_chicken
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nlopes/slack"
-	"github.com/nlopes/slack/slackevents"
-	"github.com/scylladb/go-set/strset"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -13,6 +10,10 @@ import (
 	"os"
 	"strings"
 	"unicode"
+
+	"github.com/scylladb/go-set/strset"
+	"github.com/slack-go/slack"
+	"github.com/slack-go/slack/slackevents"
 )
 
 var api = slack.New(os.Getenv("SLACK_TOKEN"))
