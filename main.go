@@ -17,6 +17,7 @@ import (
 )
 
 var api = slack.New(os.Getenv("SLACK_TOKEN"))
+var logger = NewLogger(api, "super-secret-jamie-chicken-logging-channel")
 
 const ravesUserId = "U5Y1XU9UL"
 
@@ -32,7 +33,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	bytes, _ := ioutil.ReadAll(r.Body)
 	event, e := slackevents.ParseEvent(bytes, slackevents.OptionNoVerifyToken())
 	if e != nil {
-		fmt.Println("error: ", e)
+		logger.Error(fmt.Sprintf("error: %s", e))
 	}
 	switch event.Type {
 	case slackevents.URLVerification:
