@@ -1,10 +1,11 @@
 package jamie_chicken
 
 import (
-	"github.com/nlopes/slack/slackevents"
-	"github.com/scylladb/go-set/strset"
 	"reflect"
 	"testing"
+
+	"github.com/scylladb/go-set/strset"
+	"github.com/slack-go/slack/slackevents"
 )
 
 func Test_messageWords(t *testing.T) {

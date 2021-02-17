@@ -3,9 +3,6 @@ package jamie_chicken
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nlopes/slack"
-	"github.com/nlopes/slack/slackevents"
-	"github.com/scylladb/go-set/strset"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -13,9 +10,14 @@ import (
 	"os"
 	"strings"
 	"unicode"
+
+	"github.com/scylladb/go-set/strset"
+	"github.com/slack-go/slack"
+	"github.com/slack-go/slack/slackevents"
 )
 
 var api = slack.New(os.Getenv("SLACK_TOKEN"))
+var logger = NewLogger(api, "super-secret-jamie-chicken-logging-channel")
 
 const ravesUserId = "U5Y1XU9UL"
 
@@ -31,7 +33,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	bytes, _ := ioutil.ReadAll(r.Body)
 	event, e := slackevents.ParseEvent(bytes, slackevents.OptionNoVerifyToken())
 	if e != nil {
-		fmt.Println("error: ", e)
+		logger.Error(fmt.Sprintf("error: %s", e))
 	}
 	switch event.Type {
 	case slackevents.URLVerification:
